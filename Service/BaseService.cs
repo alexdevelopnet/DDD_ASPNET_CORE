@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
-using System;
 using System.Collections.Generic;
 
 namespace Service
@@ -23,7 +22,7 @@ namespace Service
 
         public void Delete(int id) => _baseRepository.Delete(id);
 
-        public TEntity Update(TEntity entity) => _baseRepository.Update(entity);
+        public void Update(TEntity entity) => _baseRepository.Update(entity);
 
     }
 }

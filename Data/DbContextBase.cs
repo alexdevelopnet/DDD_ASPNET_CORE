@@ -6,6 +6,11 @@ namespace Data
     public class DbContextBase: DbContext
     {
         public DbContextBase(DbContextOptions<DbContextBase> options) : base(options) { }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+        }
     }
 }

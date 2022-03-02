@@ -12,24 +12,22 @@ namespace Data.Repository
         {
             this._dbContextBase = dbContextBase;
         }
-
         public void Insert(TEntity entity)
         {
             _dbContextBase.Add(entity);
             _dbContextBase.SaveChanges();
         }
 
-        public IEnumerable<TEntity> GetAll() => _dbContextBase.Set<TEntity>().ToList();
+        public IList<TEntity> Select() => _dbContextBase.Set<TEntity>().ToList();
 
-
-        public TEntity GetById(int id)
+        public TEntity Select(int id)
         {
             return _dbContextBase.Set<TEntity>().Find(id);
         }
 
         public void Delete(int id)
         {
-            _dbContextBase.Set<TEntity>().Remove(GetById(id));
+            _dbContextBase.Set<TEntity>().Remove(Select(id));
         }
 
         public void Update(TEntity entity)
@@ -37,5 +35,6 @@ namespace Data.Repository
             _dbContextBase.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _dbContextBase.SaveChanges();
         }
+
     }
 }

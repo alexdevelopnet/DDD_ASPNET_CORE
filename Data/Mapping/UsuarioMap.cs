@@ -1,19 +1,14 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Mapping
 {
-    public class UserMap : IEntityTypeConfiguration<Usuario>
+    public class UsuarioMap : IEntityTypeConfiguration<Usuario>
     {
         public void Configure(EntityTypeBuilder<Usuario> builder)
         {
-            builder.ToTable("User");
+            builder.ToTable("Usuario");
 
             builder.HasKey(prop => prop.Id);
 
@@ -34,7 +29,7 @@ namespace Data.Mapping
             builder.Property(prop => prop.Email)
                 .HasConversion(prop => prop.ToString(), prop => prop)
                 .IsRequired()
-                .HasColumnName("sobreNome")
+                .HasColumnName("Email")
                 .HasColumnType("varchar(100)");
 
         }

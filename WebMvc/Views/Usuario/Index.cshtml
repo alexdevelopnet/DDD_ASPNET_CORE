@@ -2,6 +2,8 @@
 
 @model IEnumerable<WebMvc.Models.UsuarioViewModel>
 
+<a disable-by-claim-name="Usuario" disable-by-claim-value="Editar" class="btn btn-info" asp-controller="Usuario" asp-action="Adicionar"><spam class="fa fa-pencil-alt"></spam>Novo </a>
+<hr>
 <table class="table table-hover">
     <thead class="thead-dark">
         <tr>
@@ -40,9 +42,9 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-warning" asp-controller="Usuarios" asp-action="Details" asp-route-id="@item.Id"><spam class="fa fa-search"></spam> </a>
-                    <a disable-by-claim-name="Usuario" disable-by-claim-value="Editar" class="btn btn-info" asp-controller="Usuarios" asp-action="Edit" asp-route-id="@item.Id"><spam class="fa fa-pencil-alt"></spam> </a>
-                    <a disable-by-claim-name="Usuario" disable-by-claim-value="Excluir" class="btn btn-danger" asp-controller="Usuarios" asp-action="Delete" asp-route-id="@item.Id"><spam class="fa fa-trash"></spam> </a>
+                    <a class="btn btn-warning" asp-controller="Usuario" asp-action="Detalhes" asp-route-id="@item.Id"><spam class="fa fa-search"></spam>Detalhes </a>
+                    <a disable-by-claim-name="Usuario" disable-by-claim-value="Editar" class="btn btn-info" asp-controller="Usuario" asp-action="Editar" asp-route-id="@item.Id"><spam class="fa fa-pencil-alt"></spam>Editar </a>
+                    <a disable-by-claim-name="Usuario" disable-by-claim-value="Excluir" class="btn btn-danger" asp-controller="Usuario" asp-action="Excluir" asp-route-id="@item.Id"><spam class="fa fa-trash"></spam> Excluir</a>
                 </td>
             </tr>
         }

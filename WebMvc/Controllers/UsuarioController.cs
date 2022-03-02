@@ -3,7 +3,9 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Services.Validators;
 using System.Collections.Generic;
 using WebMvc.Models;
 
@@ -16,85 +18,90 @@ namespace WebMvc.Controllers
         public UsuarioController(IBaseService<Usuario> baseService, IMapper mapper)
         {
             this._baseService = baseService;
-            this._mapper = mapper;  
+            this._mapper = mapper;
         }
         // GET: UsuarioController
-        public  ActionResult Index()
+        public ActionResult Index()
         {
             IEnumerable<Usuario> usuarios = _baseService.Get<Usuario>();
 
             var resultado = _mapper.Map<List<UsuarioViewModel>>(usuarios);
-             
+
             return View(resultado);
         }
 
         // GET: UsuarioController/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Detalhes(int id)
         {
-            return View();
+            Usuario usuario = _baseService.GetById<Usuario>(id);
+
+            var resultado = _mapper.Map<UsuarioViewModel>(usuario);
+
+            return View(resultado);
         }
 
         // GET: UsuarioController/Create
-        public ActionResult Create()
+        public ActionResult Adicionar()
         {
             return View();
         }
 
         // POST: UsuarioController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Adicionar(Usuario usuario)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (!ModelState.IsValid) return View(usuario);
+
+            var u = _mapper.Map<UsuarioViewModel>(usuario);
+            _baseService.Add<Usuario, UsuarioViewModel, UsuarioValidator>(usuario);
+
+            if (usuario == null) return View(usuario);
+
+            return RedirectToAction("Index");
         }
 
         // GET: UsuarioController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Editar(int id)
         {
-            return View();
+            var usuarioViewModel = Detalhes(id);
+
+            if (usuarioViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(usuarioViewModel);
+
+
         }
 
         // POST: UsuarioController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Editar(int id, Usuario usuario)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            if (id != usuario.Id) return NotFound();
+
+            if (!ModelState.IsValid) return View(usuario);
+
+            var usuarioMapper = _mapper.Map<UsuarioViewModel>(usuario);
+            _baseService.Update<Usuario, UsuarioViewModel, UsuarioValidator>(usuario);
+
+            if (usuario == null) return View(Detalhes(id));
+
+            return RedirectToAction("Index");
         }
 
         // GET: UsuarioController/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Excluir(int id)
         {
-            return View();
+            if (id == 0) return NotFound();
+
+            _baseService.Delete(id);
+            return RedirectToAction("Index");
         }
 
-        // POST: UsuarioController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+
+
     }
 }
